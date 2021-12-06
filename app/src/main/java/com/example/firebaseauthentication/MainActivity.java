@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private TextView register;
+    private TextView register, forgotPassword;
     private EditText emailView, passView;
     private Button signIn;
 
@@ -39,8 +39,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         signIn = (Button) findViewById(R.id.loginButton);
         signIn.setOnClickListener(this);
 
-        emailView = (EditText) findViewById(R.id.email);
+        emailView = (EditText) findViewById(R.id.emailReset);
         passView = (EditText)  findViewById(R.id.password);
+
+        forgotPassword = (TextView) findViewById(R.id.forgot_password);
+        forgotPassword.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
     }
@@ -54,6 +57,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.loginButton:
                 userLogin();
+                break;
+
+            case R.id.forgot_password:
+                startActivity(new Intent(this, ForgotPassword.class));
                 break;
         }
     }
@@ -82,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(task.isSuccessful()){
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+                    assert user != null;
                     if(user.isEmailVerified()){
                         startActivity(new Intent(MainActivity.this,ProfileUser.class));
                     }else{
